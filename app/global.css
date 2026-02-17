@@ -1,0 +1,220 @@
+/* Load paired serif/sans fonts used for headings and body copy */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Libre+Baskerville:wght@400;700&display=swap');
+
+:root {
+  /* Brand palette + surface tokens reused throughout the site */
+  --bg: #f7f0e2;
+  --panel: #afaa90;
+  --text: #3e3e3e;
+  --muted: #6a5c57;
+  --brand: #c7a07a;
+  --brand-600: #e2ceb1;
+  --border: #cec8bd;
+  /* Footer tone used for the bottom fade (matches footer background). */
+  --footer-bg: #efe2cf;
+}
+
+/* Consistent box model and viewport helpers */
+* { box-sizing: border-box; }
+html, body { height: 100%; }
+
+/* Full-site background gradient and typography defaults */
+body {
+  margin: 0;
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Serif heading family for page titles and cards */
+h1, h2, h3, h4, h5, h6 {
+  font-family: "Libre Baskerville", Georgia, "Times New Roman", serif;
+}
+
+/* Shared width constraint used by most sections */
+.container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+/* Sticky header with brand + nav */
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  backdrop-filter: blur(8px);
+  background: #f7f0e2;
+  border-bottom: 0px solid var(--border);
+}
+
+/* Flex layout inside the header */
+.header-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 110px;
+}
+
+/* Primary site logo link */
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  font-family: "Libre Baskerville", Georgia, "Times New Roman", serif;
+  font-weight: 2000;
+  letter-spacing: 3px;
+  text-decoration: none;
+  color: var(--text);
+}
+.brand-mark {
+  width: 60px;
+  height: 60px;
+  display: block;
+}
+
+.brand-name {
+  font-size: 1.25rem;
+}
+
+/* Main navigation list */
+.nav { display: none; gap: 20px; }
+.nav a { color: var(--muted); text-decoration: none; font-weight: 500; }
+.nav a:hover { color: var(--text); }
+.nav-cta { display: none; }
+
+/* Reveal nav when there is room on tablet+ */
+
+@media (min-width: 768px) {
+  .nav { display: flex; }
+  .nav-cta { display: block; }
+}
+
+/* Reusable pill button base */
+.btn {
+  display: inline-block;
+  padding: 10px 16px;
+  border-radius: 999px;
+  text-decoration: none;
+  font-weight: 600;
+}
+.btn-primary {
+  background: linear-gradient(90deg, var(--brand) 0%, var(--brand-600) 100%);
+  color: #f7f0e2;
+}
+.btn-primary:hover { filter: brightness(1.05); }
+.btn-secondary { border: 1px solid var(--border); color: var(--text); }
+.btn-secondary:hover { background: #18202e; }
+
+/* Give main content breathing room above footer */
+main {
+  padding-bottom: 64px;
+  flex: 1;
+  background: linear-gradient(180deg, #f3e8d8 0%, var(--bg) calc(100% - 180px), var(--footer-bg) 100%);
+}
+
+/* Generic section spacing + secondary text tone */
+.muted { color: var(--muted); }
+
+/* Uppercase label used in multiple spots */
+.eyebrow {
+  text-transform: uppercase;
+  letter-spacing: 0.25em;
+  font-size: 0.8rem;
+  margin: 0;
+  color: var(--muted);
+}
+
+/* Flex layout for bedroom/bath chip buttons */
+.chip-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+/* Individual chip button */
+.chip {
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: transparent;
+  padding: 6px 14px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--text);
+  cursor: pointer;
+}
+.chip.is-active {
+  border-color: var(--brand);
+  background: var(--brand-600);
+  color: var(--text);
+}
+/* Visual hover affordance for chips */
+.chip:hover {
+  border-color: var(--brand);
+  color: var(--brand);
+}
+
+/* A11y helper for labels text */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Global footer styling */
+.site-footer {
+  /* Match the end of the body gradient for a seamless fade. */
+  background: var(--footer-bg);
+  padding: 28px 0;
+  color: var(--muted);
+}
+
+/* --------------------------------------------------
+   Logo trace loader (route loading placeholder)
+--------------------------------------------------- */
+.logo-loader {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  gap: 10px;
+  padding: 20px;
+  text-align: center;
+}
+.logo-loader-mark {
+  width: 180px;
+  color: var(--text);
+}
+.logo-loader-mark svg {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+.logo-loader-mark path,
+.logo-loader-mark line,
+.logo-loader-mark polyline,
+.logo-loader-mark polygon,
+.logo-loader-mark circle,
+.logo-loader-mark rect,
+.logo-loader-mark ellipse {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 3;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  vector-effect: non-scaling-stroke;
+}
+.logo-loader-text {
+  text-transform: uppercase;
+  letter-spacing: 0.3em;
+  font-size: 0.6rem;
+  color: var(--muted);
+}

@@ -1,0 +1,82 @@
+/* Hero banner on landing page */
+.hero {
+  padding: 200px 0 140px;
+  background: radial-gradient(1200px 400px at 50% 0%, #f7f0e2, #f3e8d8);
+  position: relative;
+  overflow: hidden;
+}
+.hero::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(120deg, rgba(247, 240, 226, 0.9), rgba(243, 232, 216, 0.4));
+  z-index: 1;
+}
+.hero-media {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  opacity: 0.99;
+  pointer-events: none;
+}
+.hero-content {
+  position: relative;
+  z-index: 2;
+}
+/* Headline sizing for hero */
+.hero-title {
+  font-size: clamp(2rem, 6vw, 3.5rem);
+  line-height: 1.1;
+  margin: 0 0 12px;
+}
+
+/* Supporting copy within hero */
+.hero-subtitle {
+  color: var(--muted);
+  font-size: clamp(1rem, 2.5vw, 1.25rem);
+  max-width: 56ch;
+  margin: 0 auto 24px;
+}
+.hero-actions { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+
+/* Generic section spacing + secondary text tone */
+.section { padding: 40px 0; }
+.section h2 { font-size: 1.5rem; margin: 0 0 16px; }
+/* Gentle mid-page wash so sections blend with the body background. */
+.section-soft {
+  background: linear-gradient(
+    180deg,
+    rgba(243, 232, 216, 0) 0%,
+    rgba(239, 226, 207, 0.6) 50%,
+    rgba(243, 232, 216, 0) 100%
+  );
+}
+
+/* Responsive grid used for featured cards */
+.cards {
+  display: grid;
+  grid-template-columns: repeat(1, minmax(0, 1fr));
+  gap: 16px;
+}
+/* Bump cards grid to two columns on small tablets */
+@media (min-width: 640px) { .cards { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+/* Show three columns on desktops */
+@media (min-width: 1024px) { .cards { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+
+/* Standard card styling on the home page */
+.card {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  overflow: hidden;
+}
+/* Placeholder media ratio for hero cards */
+.card-media { aspect-ratio: 16 / 10; background: #afaa90; }
+/* Container for text content within home page cards */
+.card-body { padding: 14px; }
+/* Card title typography */
+.card-title { font-weight: 700; margin: 0 0 6px; }
+/* Meta line showing stats on home page cards */
+.card-meta { color: var(--text); font-size: 0.95rem; margin: 0 0 10px; }
+/* CTA buttons row inside home page cards */
+.card-actions { display: flex; gap: 8px; }

@@ -1,0 +1,300 @@
+/* Main wrapper for the Gallery route */
+.gallery {
+  padding: 56px 0 80px;
+}
+/* Custom container width for the gallery page */
+.gallery-shell {
+  width: 100%;
+  max-width: 1220px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+/* Intro copy centered above filters */
+.gallery-intro {
+  text-align: center;
+  margin-bottom: 32px;
+}
+/* Gallery headline sizing */
+.gallery-intro h1 {
+  margin: 8px 0 12px;
+  font-size: clamp(2rem, 4vw, 3rem);
+}
+/* Two-column grid: sidebar + card area */
+.gallery-layout {
+  display: grid;
+  grid-template-columns: 240px minmax(0, 1fr);
+  gap: 32px;
+  align-items: flex-start;
+}
+/* Sticky filter sidebar that scrolls separately */
+.gallery-sidebar {
+  position: sticky;
+  top: 110px;
+  max-height: calc(100vh - 150px);
+  overflow-y: auto;
+  border: 1px solid var(--border);
+  border-radius: 22px;
+  padding: 26px;
+  backdrop-filter: blur(8px);
+  background: rgba(247, 240, 226, 0.8);
+}
+/* Slim scrollbar treatment for the sidebar */
+.gallery-sidebar::-webkit-scrollbar {
+  width: 4px;
+}
+.gallery-sidebar::-webkit-scrollbar-track {
+  background: transparent;
+}
+.gallery-sidebar::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 999px;
+}
+/* Wrapper for each filter block */
+.filter-group {
+  padding: 16px 0;
+  border-top: 1px solid var(--border);
+}
+.filter-group:first-of-type {
+  border-top: none;
+  padding-top: 0;
+}
+/* Top row inside each filter group */
+.filter-group-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+/* Filter label text */
+.filter-label {
+  margin: 0;
+  font-weight: 600;
+}
+/* Static readout shown opposite sliders */
+.range-value {
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+/* Slider inputs for numeric filters */
+.filter-slider {
+  width: 100%;
+  accent-color: var(--brand);
+  --slider-thumb-size: 18px;
+  --value-percent: 0%;
+}
+.filter-slider:focus {
+  outline: none;
+}
+.filter-slider::-webkit-slider-runnable-track {
+  height: 6px;
+  background: linear-gradient(
+    90deg,
+    var(--brand) 0%,
+    var(--brand) var(--value-percent),
+    var(--brand-600) var(--value-percent),
+    var(--brand-600) 100%
+  );
+  border-radius: 999px;
+}
+.filter-slider::-webkit-slider-thumb {
+  appearance: none;
+  background: var(--brand);
+  border: 2px solid var(--bg);
+  margin-top: calc((6px - var(--slider-thumb-size)) / 2);
+  box-sizing: border-box;
+}
+.filter-slider::-moz-range-track {
+  height: 6px;
+  background: var(--brand-600);
+  border-radius: 999px;
+}
+.filter-slider::-moz-range-progress {
+  height: 6px;
+  background: var(--brand);
+  border-radius: 999px;
+}
+.filter-slider::-moz-range-thumb {
+  background: var(--brand);
+  border: 2px solid var(--bg);
+  box-sizing: border-box;
+}
+.filter-slider::-webkit-slider-thumb {
+  width: var(--slider-thumb-size);
+  height: var(--slider-thumb-size);
+}
+.filter-slider::-moz-range-thumb {
+  width: var(--slider-thumb-size);
+  height: var(--slider-thumb-size);
+  border: none;
+}
+.filter-slider-wrap {
+  position: relative;
+  padding-bottom: 24px;
+}
+.filter-slider-value {
+  position: absolute;
+  top: 30px;
+  transform: translateX(-50%);
+  font-size: 0.8rem;
+  color: var(--muted);
+  background: var(--bg);
+  padding: 4px 8px;
+  border-radius: 999px;
+  border: 2px solid var(--border);
+  white-space: nowrap;
+  pointer-events: none;
+}
+.filter-slider-value::after {
+  content: "";
+  position: absolute;
+  top: -6px;
+  left: 50%;
+  transform: translateX(-50%);
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+  border-bottom: 6px solid var(--bg);
+}
+.filter-slider-value::before {
+  content: "";
+  position: absolute;
+  top: -8px;
+  left: 50%;
+  transform: translateX(-50%);
+  border-left: 8px solid transparent;
+  border-right: 8px solid transparent;
+  border-bottom: 8px solid var(--border);
+}
+/* Right column housing the cards */
+.gallery-content {
+  min-height: 400px;
+}
+/* Header row above gallery cards */
+.gallery-content-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+  flex-wrap: wrap;
+  margin-bottom: 24px;
+}
+/* Responsive card grid */
+.gallery-cards {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 20px;
+}
+@media (max-width: 900px) {
+  .gallery-cards {
+    grid-template-columns: 1fr;
+  }
+}
+/* Gallery card shell */
+.gallery-card {
+  border: 1px solid var(--border);
+  border-radius: 22px;
+  padding: 18px;
+  background: var(--bg);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  position: relative;
+}
+/* Placeholder media block */
+.gallery-card-media {
+  border: 1px dashed var(--border);
+  border-radius: 18px;
+  height: 180px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--muted);
+  font-size: 0.9rem;
+  background: rgba(255, 255, 255, 0.4);
+  position: relative;
+  overflow: hidden;
+}
+.gallery-card-media span {
+  z-index: 1;
+}
+.gallery-card-media img {
+  object-fit: cover;
+  position: absolute;
+  inset: 0;
+}
+/* Wrapper for gallery card text + actions (child selectors below) */
+/* Card title spacing */
+.gallery-card-body {
+  padding-bottom: 64px;
+}
+.gallery-card-body h3 {
+  margin: 0 0 6px;
+}
+/* Card description spacing */
+.gallery-card-body p {
+  margin: 0 0 12px;
+}
+/* Row for plan tag + price */
+.gallery-card-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  font-size: 0.9rem;
+}
+/* Styling for plan categories */
+.gallery-card-tag {
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  font-size: 0.7rem;
+  color: var(--muted);
+}
+/* Emphasized plan price */
+.gallery-card-price {
+  font-weight: 600;
+}
+/* Definition list of plan specs */
+.gallery-card-specs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin: 12px 0 20px;
+}
+/* Spec column minimum width */
+.gallery-card-specs div {
+  min-width: 120px;
+}
+/* Label styling within specs */
+.gallery-card-specs dt {
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: var(--muted);
+  margin-bottom: 4px;
+}
+/* Value styling within specs */
+.gallery-card-specs dd {
+  margin: 0;
+  font-weight: 600;
+}
+/* Action button row */
+.gallery-card-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  position: absolute;
+  left: 18px;
+  right: 18px;
+  bottom: 18px;
+}
+/* Collapse the layout on narrow screens */
+@media (max-width: 960px) {
+  .gallery-layout {
+    grid-template-columns: 1fr;
+  }
+  .gallery-sidebar {
+    position: static;
+    max-height: none;
+    overflow: visible;
+  }
+}
