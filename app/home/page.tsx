@@ -4,10 +4,16 @@ import Image from 'next/image'
 import { getPlans } from '../../lib/planRepository'
 import blueprintAsset from '../../data/BlueprintAsset.png'
 
-export const revalidate = 60
+export const dynamic = 'force-dynamic'
 
 export default async function HomePage() {
-  const plans = await getPlans()
+  let plans: Awaited<ReturnType<typeof getPlans>> = []
+
+  try {
+    plans = await getPlans()
+  } catch (error) {
+    console.error('Failed to fetch home plans:', error)
+  }
 
   return (
     <>

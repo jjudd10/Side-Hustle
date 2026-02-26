@@ -9,10 +9,16 @@ export const metadata: Metadata = {
   description: 'Filter curated house plans by square footage, price, bedrooms, and bathrooms.',
 }
 
-export const revalidate = 60
+export const dynamic = 'force-dynamic'
 
 export default async function GalleryPage() {
-  const plans = await getPlans()
+  let plans = []
+
+  try {
+    plans = await getPlans()
+  } catch (error) {
+    console.error('Failed to fetch gallery plans:', error)
+  }
 
   if (!plans.length) {
     return (
