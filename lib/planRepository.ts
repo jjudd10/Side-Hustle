@@ -1,4 +1,4 @@
-import { supabase } from './supabaseClient'
+import { getSupabaseClient } from './supabaseClient'
 
 export type PlanImage = {
   src: string
@@ -146,10 +146,7 @@ const mapPlan = (row: PlanRecord): Plan => {
         {
           label: 'Plan Modifications',
           helper: '',
-          options: [
-            { label: 'Mirror', priceAdjustment: 50 },
-            
-          ],
+          options: [{ label: 'Mirror', priceAdjustment: 50 }],
         },
         {
           label: 'Delivery',
@@ -163,7 +160,7 @@ const mapPlan = (row: PlanRecord): Plan => {
       investmentNote: formatPrice(row.price),
       basePriceValue: row.price ?? null,
       ctaLabel: 'PURCHASE',
-      ctaHelper: '', //Add text in the future to clarify the CTA
+      ctaHelper: '', // Add text in the future to clarify the CTA
     },
     infoBlocks: [
       {
@@ -190,10 +187,12 @@ const mapPlan = (row: PlanRecord): Plan => {
 }
 
 export async function getPlans(): Promise<Plan[]> {
-  const { data, error } = await supabase
-    .from(tableName)
-    .select('*')
-    .order('created_at', { ascending: true })
+  const supabase = getSupabaseClient()
+  if (!supabase) {
+    return []
+  }
+
+  const { data, error } = await supabase.from(tableName).select('*').order('created_at', { ascending: true })
 
   if (error) {
     throw new Error(`Failed to load plans: ${error.message}`)
@@ -203,6 +202,11 @@ export async function getPlans(): Promise<Plan[]> {
 }
 
 export async function getPlanBySlug(slug: string): Promise<Plan | null> {
+  const supabase = getSupabaseClient()
+  if (!supabase) {
+    return null
+  }
+
   const { data, error } = await supabase.from(tableName).select('*').eq('slug', slug).maybeSingle()
 
   if (error) {
@@ -213,9 +217,15 @@ export async function getPlanBySlug(slug: string): Promise<Plan | null> {
 }
 
 export async function getPlanSlugs(): Promise<string[]> {
+  const supabase = getSupabaseClient()
+  if (!supabase) {
+    return []
+  }
+
   const { data, error } = await supabase.from(tableName).select('slug')
   if (error) {
     throw new Error(`Failed to fetch plan slugs: ${error.message}`)
   }
-  return (data ?? []).map((row) => row.slug)
+
+  return ((data ?? []) as Array<{ slug: string }>).map((row) => row.slug)
 }

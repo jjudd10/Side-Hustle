@@ -1,10 +1,22 @@
 import { createClient } from '@supabase/supabase-js'
 
-const supabaseUrl = process.env.SUPABASE_URL
-const supabaseKey = process.env.SUPABASE_ANON_KEY
+type AppSupabaseClient = ReturnType<typeof createClient>
 
-if (!supabaseUrl || !supabaseKey) {
-  throw new Error('Missing Supabase configuration. Set SUPABASE_URL and SUPABASE_ANON_KEY in your environment.')
+let cachedClient: AppSupabaseClient | null | undefined
+
+export function getSupabaseClient(): AppSupabaseClient | null {
+  if (cachedClient !== undefined) {
+    return cachedClient
+  }
+
+  const supabaseUrl = process.env.SUPABASE_URL
+  const supabaseKey = process.env.SUPABASE_ANON_KEY
+
+  if (!supabaseUrl || !supabaseKey) {
+    cachedClient = null
+    return cachedClient
+  }
+
+  cachedClient = createClient(supabaseUrl, supabaseKey)
+  return cachedClient
 }
-
-export const supabase = createClient(supabaseUrl, supabaseKey)
