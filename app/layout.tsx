@@ -2,6 +2,7 @@ import './global.css'
 import Link from 'next/link'
 import Image from 'next/image'
 import type { Metadata } from 'next'
+import { Analytics } from '@vercel/analytics/next'
 import logoMark from '../lib/Logo - Wireframe - Low Detail - v1.svg'
 
 export const metadata: Metadata = {
@@ -40,6 +41,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             <p>© {new Date().getFullYear()} Interior Plans. All rights reserved.</p>
           </div>
         </footer>
+        <Analytics />
       </body>
     </html>
   )
