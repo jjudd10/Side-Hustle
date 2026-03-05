@@ -3,6 +3,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { getPlans } from '../../lib/planRepository'
 import blueprintAsset from '../../data/BlueprintAsset.png'
+import { HeroParallax } from './HeroParallax'
 
 export const dynamic = 'force-dynamic'
 
@@ -18,6 +19,7 @@ export default async function HomePage() {
   return (
     <>
       <section className="hero">
+        <HeroParallax />
         <div className="hero-media" aria-hidden="true">
           <Image
             alt=""

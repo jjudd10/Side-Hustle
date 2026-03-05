@@ -1,36 +1,56 @@
-/* --------------------------------------------------
-   Logo trace loader (route loading placeholder)
---------------------------------------------------- */
+/* ─────────────────────────────────────────────────────────────────────────────
+   Logo Trace Loader — layout & visual styles
+   The animation itself lives in app/components/LogoTraceLoader.tsx (GSAP).
+   These rules only control sizing, positioning, and stroke appearance.
+   ───────────────────────────────────────────────────────────────────────────── */
+
+/* Full-viewport centering for the mark + label stack */
 .logo-loader {
   min-height: 100vh;
-  display: grid;
-  place-items: center;
-  gap: 5px;
+  /* Flexbox keeps the mark + text as one centered group.
+     (grid with place-items:center splits children into separate rows,
+     pushing the text to the bottom half of the viewport.) */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   padding: 5px;
+  /* Shifts the centered group upward. Increase to move it higher. */
+  padding-bottom: 30vh;
   text-align: center;
+  /* Starts invisible; GSAP fades this in on mount (see LogoTraceLoader.tsx) */
+  opacity: 0;
 }
+
+/* Controls the rendered size of the SVG.
+   Increase width to make the animation more prominent on screen. */
 .logo-loader-mark {
-  width: 180px;
-  height: auto;
+  width: 150px;
   color: var(--text);
 }
+
+/* Wireframe (stroke-only) styling for every SVG shape.
+   fill: none    → no filled regions, only the drawn stroke is visible
+   stroke-width  → line thickness; smaller = more delicate drafting look
+   vector-effect → keeps stroke-width visually constant regardless of SVG scale */
 .logo-loader-mark path,
-.logo-loader-mark line,
-.logo-loader-mark polyline,
-.logo-loader-mark polygon,
-.logo-loader-mark circle,
-.logo-loader-mark rect,
-.logo-loader-mark ellipse {
+.logo-loader-mark rect {
   fill: none;
   stroke: currentColor;
-  stroke-width: 3;
+  stroke-width: 1.5;
   stroke-linecap: round;
   stroke-linejoin: round;
   vector-effect: non-scaling-stroke;
 }
+
+/* Small uppercase caption beneath the mark.
+   margin-top pulls the text up past the SVG's built-in bottom whitespace
+   (~19px at 150px width), then adds back 10px of breathing room.
+   Adjust this value if you resize .logo-loader-mark width. */
 .logo-loader-text {
+  margin-top: -9px;
   text-transform: uppercase;
-  letter-spacing: 0.3em;
+  letter-spacing: 0.35em;
   font-size: 0.6rem;
   color: var(--muted);
 }

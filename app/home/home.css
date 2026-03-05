@@ -1,6 +1,6 @@
 /* Hero banner on landing page */
 .hero {
-  padding: 200px 0 140px;
+  padding: 100px 0 80px;
   background: radial-gradient(1200px 400px at 50% 0%, #f7f0e2, #f3e8d8);
   position: relative;
   overflow: hidden;
@@ -14,10 +14,11 @@
 }
 .hero-media {
   position: absolute;
-  inset: 0;
+  inset: -120px 0;
   z-index: 0;
   opacity: 0.99;
   pointer-events: none;
+  will-change: transform;
 }
 .hero-content {
   position: relative;
