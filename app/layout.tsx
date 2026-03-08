@@ -6,8 +6,8 @@ import { Analytics } from '@vercel/analytics/next'
 import logoMark from '../lib/Logo - Wireframe - Low Detail - v1.svg'
 
 export const metadata: Metadata = {
-  title: 'Interior Plans — Modern Floorplans & Design',
-  description: 'Browse premium floorplans and interior design packages tailored to your lifestyle.',
+  title: 'Home in Time - Premium Floorplans',
+  description: 'Browse floorplans tailored to your lifestyle.',
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
@@ -22,8 +22,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                 className="brand-mark"
                 src={logoMark}
                 alt="Brand Logo"
-                width={60}
-                height={60}
+                width={70}
+                height={70}
                 priority
               />
              <span className="brand-name">Home in Time</span>
@@ -38,7 +38,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <main>{children}</main>
         <footer className="site-footer">
           <div className="container">
-            <p>© {new Date().getFullYear()} Interior Plans. All rights reserved.</p>
+            <p style={{ fontSize: '0.90rem' }}> Questions? Email us at info@homeintime.cc </p>
+            <p>© 2025 - {new Date().getFullYear()} Strictly Business L.C. All rights reserved.</p>
           </div>
         </footer>
         <Analytics />

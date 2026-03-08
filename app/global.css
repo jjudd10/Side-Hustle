@@ -174,6 +174,7 @@ main {
 .site-footer {
   /* Match the end of the body gradient for a seamless fade. */
   background: var(--footer-bg);
-  padding: 28px 0;
+  padding: 16px 0;
   color: var(--muted);
+  font-size: 0.75rem;
 }
