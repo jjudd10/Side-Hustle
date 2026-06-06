@@ -15,6 +15,7 @@ export type PlanOptionGroup = {
   label: string
   helper?: string
   options?: PlanOption[]
+  multiSelect?: boolean
 }
 
 export type PlanOption = {
@@ -150,6 +151,7 @@ const mapPlan = (row: PlanRecord): Plan => {
         },
         {
           label: 'Delivery',
+          multiSelect: true,
           options: [
             { label: 'PDFs', priceAdjustment: 0 },
             { label: 'CAD files', priceAdjustment: 50 },

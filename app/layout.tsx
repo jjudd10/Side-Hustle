@@ -4,6 +4,7 @@ import Image from 'next/image'
 import type { Metadata } from 'next'
 import { Analytics } from '@vercel/analytics/next'
 import logoMark from '../lib/Logo - Wireframe - Low Detail - v1.svg'
+import NavigationLoader from './components/NavigationLoader'
 
 export const metadata: Metadata = {
   title: 'Home in Time - Premium Floorplans',
@@ -14,6 +15,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en">
       <body>
+        <NavigationLoader />
         <header className="site-header">
           <div className="container header-inner">
             <Link className="brand" href="/">

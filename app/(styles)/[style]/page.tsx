@@ -5,17 +5,18 @@ import { Navigation } from '@/components/navigation'
 import { products, styleDetails } from '@/lib/content'
 
 type StylePageProps = {
-  params: {
+  params: Promise<{
     style: string
-  }
+  }>
 }
 
 export function generateStaticParams() {
   return styleDetails.map((style) => ({ style: style.slug }))
 }
 
-export function generateMetadata({ params }: StylePageProps) {
-  const detail = styleDetails.find((style) => style.slug === params.style)
+export async function generateMetadata({ params }: StylePageProps) {
+  const { style } = await params
+  const detail = styleDetails.find((s) => s.slug === style)
 
   if (!detail) {
     return {}
@@ -27,8 +28,9 @@ export function generateMetadata({ params }: StylePageProps) {
   }
 }
 
-export default function StylePage({ params }: StylePageProps) {
-  const detail = styleDetails.find((style) => style.slug === params.style)
+export default async function StylePage({ params }: StylePageProps) {
+  const { style } = await params
+  const detail = styleDetails.find((s) => s.slug === style)
 
   if (!detail) {
     notFound()

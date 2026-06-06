@@ -6,17 +6,16 @@
 
 /* Full-viewport centering for the mark + label stack */
 .logo-loader {
-  min-height: 100vh;
-  /* Flexbox keeps the mark + text as one centered group.
-     (grid with place-items:center splits children into separate rows,
-     pushing the text to the bottom half of the viewport.) */
+  /* Fixed overlay so the loader is always centered over the full viewport,
+     regardless of the layout's header/footer or scroll position. */
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  background: #f7f0e2;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 5px;
-  /* Shifts the centered group upward. Increase to move it higher. */
-  padding-bottom: 30vh;
   text-align: center;
   /* Starts invisible; GSAP fades this in on mount (see LogoTraceLoader.tsx) */
   opacity: 0;

@@ -177,7 +177,7 @@ export default async function PlanDetailPage({ params }: PlanParams) {
         </div>
 
         {/* Right column for pricing/options selections styled like the gallery sidebar */}
-        <PlanOptionsCard optionCard={plan.optionCard} />
+        <PlanOptionsCard optionCard={plan.optionCard} planSlug={plan.slug} />
       </div>
     </article>
   )
