@@ -38,7 +38,7 @@ export type PlanRecord = {
   second_img: string | null
   third_img: string | null
   fourth_img: string | null
-  price: number | null
+  price_cents: number | null
 }
 
 export type Plan = {
@@ -94,14 +94,10 @@ const toImage = (src: string | null, alt: string): PlanImage | undefined =>
 
 const toThumbnailImage = (filename: string | null, alt: string): PlanImage | undefined => {
   const cleaned = filename?.trim()
-  if (!cleaned) {
-    return undefined
-  }
-
-  return {
-    src: `/api/thumbnails/${encodeURIComponent(cleaned)}`,
-    alt,
-  }
+  if (!cleaned) return undefined
+  // R2-uploaded images are full URLs; legacy images use the local proxy
+  const src = cleaned.startsWith('http') ? cleaned : `/api/thumbnails/${encodeURIComponent(cleaned)}`
+  return { src, alt }
 }
 
 const mapPlan = (row: PlanRecord): Plan => {
@@ -130,8 +126,8 @@ const mapPlan = (row: PlanRecord): Plan => {
     galleryCard: {
       tag: row.id_code ?? 'Concept plan',
       description: row.intro ?? 'Add a short introduction for this plan via the intro column.',
-      price: formatPrice(row.price),
-      priceValue: row.price ?? null,
+      price: formatPrice(row.price_cents != null ? row.price_cents / 100 : null),
+      priceValue: row.price_cents != null ? row.price_cents / 100 : null,
       area: formatStat(row.area, 'sq ft'),
       areaValue: row.area ?? null,
       beds: formatStat(row.beds, 'Bedrooms'),
@@ -159,8 +155,8 @@ const mapPlan = (row: PlanRecord): Plan => {
           ],
         },
       ],
-      investmentNote: formatPrice(row.price),
-      basePriceValue: row.price ?? null,
+      investmentNote: formatPrice(row.price_cents != null ? row.price_cents / 100 : null),
+      basePriceValue: row.price_cents != null ? row.price_cents / 100 : null,
       ctaLabel: 'PURCHASE',
       ctaHelper: '', // Add text in the future to clarify the CTA
     },

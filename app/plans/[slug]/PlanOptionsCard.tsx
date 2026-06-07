@@ -53,7 +53,7 @@ export default function PlanOptionsCard({ optionCard, planSlug }: PlanOptionsCar
     setError(null)
 
     try {
-      const response = await fetch('/api/create-payment-intent', {
+      const response = await fetch('/api/create-checkout-session', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ planSlug, selectedOptionsByGroup: selectedIndexes }),
@@ -67,13 +67,7 @@ export default function PlanOptionsCard({ optionCard, planSlug }: PlanOptionsCar
         return
       }
 
-      const params = new URLSearchParams({
-        clientSecret: data.clientSecret,
-        amount: String(data.amount),
-        planTitle: data.planTitle,
-      })
-
-      router.push(`/checkout?${params.toString()}`)
+      router.push(`/checkout?clientSecret=${encodeURIComponent(data.clientSecret)}`)
     } catch {
       setError('Something went wrong. Please try again.')
       setLoading(false)

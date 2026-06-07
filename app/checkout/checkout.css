@@ -1,120 +1,213 @@
-.checkout-shell {
-  width: 100%;
+/* ─────────────────────────────────────────────
+   Two-column checkout layout
+   Left: brand/trust panel   Right: Stripe form
+───────────────────────────────────────────── */
+
+.co-layout {
+  display: flex;
   min-height: calc(100vh - 110px);
+}
+
+/* ── Brand panel (left) ── */
+.co-brand {
+  position: relative;
+  flex: 0 0 38%;
+  max-width: 440px;
+  background: linear-gradient(160deg, #f3e8d8 0%, #efe2cf 100%);
+  border-right: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.co-brand-inner {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 48px 40px 40px;
+  height: 100%;
+}
+
+/* Heading block */
+.co-brand-copy {
+  margin-bottom: 36px;
+}
+
+.co-brand-heading {
+  font-family: "Libre Baskerville", Georgia, "Times New Roman", serif;
+  font-size: clamp(1.5rem, 2.8vw, 2rem);
+  font-weight: 400;
+  color: var(--text);
+  margin: 0 0 14px;
+  line-height: 1.25;
+}
+
+.co-brand-sub {
+  font-size: 0.875rem;
+  line-height: 1.75;
+  color: var(--muted);
+  margin: 0;
+}
+
+/* Trust signals */
+.co-trust-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  border-top: 1px solid var(--border);
+  padding-top: 28px;
+}
+
+.co-trust-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 0.82rem;
+  color: var(--muted);
+  line-height: 1.4;
+}
+
+.co-trust-icon {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  color: var(--brand);
+}
+
+/* Footer credit */
+.co-brand-footer {
+  margin-top: auto;
+  padding-top: 32px;
+}
+
+.co-brand-footer p {
+  font-size: 0.72rem;
+  color: var(--border);
+  margin: 0;
+  letter-spacing: 0.04em;
+}
+
+/* Decorative circles — warm brand tones */
+.co-brand-deco {
+  position: absolute;
+  bottom: -60px;
+  right: -60px;
+  width: 220px;
+  height: 220px;
+  pointer-events: none;
+}
+
+.co-brand-deco span {
+  position: absolute;
+  border-radius: 50%;
+  border: 1px solid var(--border);
+  opacity: 0.5;
+}
+.co-brand-deco span:nth-child(1) { inset: 0; }
+.co-brand-deco span:nth-child(2) { inset: 28px; }
+.co-brand-deco span:nth-child(3) { inset: 56px; }
+
+/* ── Form panel (right) ── */
+.co-form-panel {
+  flex: 1 1 0;
+  background: var(--bg);
   display: flex;
   align-items: flex-start;
   justify-content: center;
-  padding: 56px 20px 96px;
-  background: var(--bg);
+  padding: 48px 40px 64px;
+  overflow-y: auto;
 }
 
-.checkout-container {
+.co-form-scroll {
   width: 100%;
-  max-width: 480px;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
+  max-width: 560px;
 }
 
-.checkout-heading {
-  font-size: clamp(1.5rem, 4vw, 2rem);
-  margin: 0 0 20px;
-  color: var(--text);
+/* Stripe iframe wrapper — border-radius clips the iframe */
+.co-stripe-wrap {
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow:
+    0 1px 3px rgba(0,0,0,0.06),
+    0 8px 24px rgba(0,0,0,0.08);
+  isolation: isolate;
 }
 
-.checkout-form {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
+.co-stripe-wrap #checkout {
+  display: block;
+  min-height: 480px;
 }
 
-.checkout-card {
-  background: #ffffff;
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  padding: 20px 22px;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-
-.checkout-section-label {
-  margin: 0;
-  font-size: 0.7rem;
-  font-weight: 600;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--muted);
-}
-
-.checkout-summary-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 16px;
-}
-
-.checkout-plan-title {
-  font-family: "Libre Baskerville", Georgia, "Times New Roman", serif;
-  font-size: 1rem;
-  color: var(--text);
-}
-
-.checkout-total {
-  font-size: 1.15rem;
-  font-weight: 600;
-  color: var(--text);
-  white-space: nowrap;
-}
-
-.checkout-skeleton {
-  height: 180px;
-  border-radius: 6px;
-  background: linear-gradient(90deg, #f0ebe3 25%, #e8e2d8 50%, #f0ebe3 75%);
-  background-size: 200% 100%;
-  animation: shimmer 1.4s infinite;
-}
-
-@keyframes shimmer {
-  0% { background-position: 200% 0; }
-  100% { background-position: -200% 0; }
-}
-
-.checkout-error {
-  margin: 0;
-  padding: 12px 16px;
+.co-stripe-error {
+  padding: 20px 24px;
   background: #fef2f2;
   border: 1px solid #fecaca;
-  border-radius: 8px;
+  border-radius: 12px;
   color: #b91c1c;
   font-size: 0.875rem;
 }
 
-.checkout-submit {
-  width: 100%;
-  padding: 15px;
-  font-size: 0.95rem;
-  letter-spacing: 0.06em;
-  margin-top: 4px;
-  border-radius: 10px;
+/* ── Responsive: stack on small screens ── */
+@media (max-width: 768px) {
+  .co-layout {
+    flex-direction: column;
+  }
+
+  .co-brand {
+    flex: none;
+    max-width: none;
+    border-right: none;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .co-brand-inner {
+    padding: 28px 20px 24px;
+  }
+
+  .co-brand-copy {
+    display: none;
+  }
+
+  .co-trust-list {
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 8px;
+    padding-top: 16px;
+  }
+
+  .co-trust-item {
+    flex: 1 1 calc(50% - 4px);
+    font-size: 0.75rem;
+  }
+
+  .co-brand-footer,
+  .co-brand-deco {
+    display: none;
+  }
+
+  .co-form-panel {
+    padding: 24px 16px 48px;
+  }
+
+  .co-stripe-wrap {
+    border-radius: 12px;
+  }
 }
 
-.checkout-submit:disabled {
-  opacity: 0.55;
-  cursor: not-allowed;
-}
+/* ─────────────────────────────────────────────
+   Success page
+───────────────────────────────────────────── */
 
-.checkout-secure-note {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
-  margin: 4px 0 0;
-  font-size: 0.78rem;
-  color: var(--muted);
-}
-
-/* Success page */
 .checkout-success-shell {
   width: 100%;
   min-height: calc(100vh - 110px);
@@ -171,3 +264,35 @@
   flex-wrap: wrap;
   justify-content: center;
 }
+
+/* ─────────────────────────────────────────────
+   Shared button styles
+───────────────────────────────────────────── */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 20px;
+  border-radius: 999px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-decoration: none;
+  transition: filter 0.15s, background 0.15s;
+  cursor: pointer;
+  border: none;
+}
+
+.btn-primary {
+  background: linear-gradient(90deg, var(--brand) 0%, var(--brand-600) 100%);
+  color: var(--bg);
+}
+.btn-primary:hover { filter: brightness(1.05); }
+
+.btn-secondary {
+  background: transparent;
+  color: var(--text);
+  border: 1px solid var(--border);
+}
+.btn-secondary:hover { background: var(--border); }
