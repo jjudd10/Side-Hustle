@@ -1,0 +1,415 @@
+/* ─── Creator Portal ────────────────────────────────── */
+
+.cp-page {
+  min-height: calc(100vh - 110px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 24px;
+}
+
+.cp-card {
+  width: 100%;
+  max-width: 460px;
+  background: rgba(255, 255, 255, 0.6);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 52px 44px;
+}
+
+.cp-eyebrow {
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.38em;
+  color: var(--brand);
+  margin: 0;
+  font-family: "Inter", sans-serif;
+}
+
+.cp-title {
+  margin: 14px 0 0;
+  font-size: 2rem;
+}
+
+.cp-subtitle {
+  margin: 10px 0 0;
+  font-size: 0.875rem;
+  color: var(--muted);
+  line-height: 1.5;
+}
+
+.cp-subtitle a {
+  color: var(--brand);
+  text-decoration: underline;
+}
+
+.cp-form {
+  margin-top: 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+
+.cp-field {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+}
+
+.cp-label {
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.28em;
+  color: var(--muted);
+  font-family: "Inter", sans-serif;
+  font-weight: 500;
+}
+
+.cp-label-opt {
+  text-transform: none;
+  letter-spacing: 0;
+  font-weight: 400;
+  color: #b0a898;
+}
+
+.cp-input {
+  width: 100%;
+  padding: 13px 18px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.7);
+  font-family: "Libre Baskerville", Georgia, serif;
+  font-style: italic;
+  font-size: 0.95rem;
+  color: var(--text);
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  -webkit-appearance: none;
+}
+
+.cp-input:focus {
+  border-color: var(--brand);
+  box-shadow: 0 0 0 3px rgba(199, 160, 122, 0.15);
+}
+
+.cp-input::placeholder {
+  color: #c2b8ad;
+  font-style: italic;
+}
+
+.cp-textarea {
+  resize: none;
+}
+
+.cp-hint {
+  font-size: 0.75rem;
+  color: #b0a898;
+  margin: 2px 0 0;
+  line-height: 1.45;
+}
+
+.cp-btn-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 44px;
+  gap: 16px;
+}
+
+.cp-btn {
+  padding: 14px 28px;
+  border: none;
+  border-radius: 6px;
+  background: var(--brand);
+  color: #f7f0e2;
+  font-family: "Inter", sans-serif;
+  font-size: 0.68rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.38em;
+  cursor: pointer;
+  transition: filter 0.2s, box-shadow 0.2s;
+  white-space: nowrap;
+  text-decoration: none;
+  display: inline-block;
+}
+
+.cp-btn:hover {
+  filter: brightness(1.08);
+  box-shadow: 0 4px 20px rgba(199, 160, 122, 0.35);
+}
+
+.cp-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  filter: none;
+  box-shadow: none;
+}
+
+.cp-btn-full {
+  width: 100%;
+  text-align: center;
+}
+
+.cp-btn-outline {
+  padding: 13px 22px;
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  color: var(--muted);
+  font-family: "Inter", sans-serif;
+  font-size: 0.68rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.3em;
+  cursor: pointer;
+  transition: border-color 0.2s, color 0.2s;
+  white-space: nowrap;
+}
+
+.cp-btn-outline:hover {
+  border-color: var(--brand);
+  color: var(--brand);
+}
+
+.cp-btn-outline:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+.cp-error {
+  font-size: 0.85rem;
+  color: #a94442;
+  margin: 0;
+}
+
+.cp-success {
+  font-size: 0.85rem;
+  color: #4a7c59;
+  margin: 0;
+}
+
+/* Dashboard */
+.cp-dash {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 60px 40px 80px;
+}
+
+.cp-dash-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.cp-stat-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin-top: 40px;
+}
+
+.cp-stat-card {
+  background: rgba(255, 255, 255, 0.55);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 24px 28px;
+}
+
+.cp-stat-label {
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.3em;
+  color: var(--muted);
+  font-family: "Inter", sans-serif;
+}
+
+.cp-stat-value {
+  font-size: 2.2rem;
+  font-family: "Libre Baskerville", Georgia, serif;
+  color: var(--text);
+  margin: 8px 0 0;
+}
+
+.cp-section-label {
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.32em;
+  color: var(--muted);
+  font-family: "Inter", sans-serif;
+  font-weight: 500;
+}
+
+.cp-table-wrap {
+  margin-top: 16px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.cp-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.875rem;
+}
+
+.cp-table thead tr {
+  background: rgba(255, 255, 255, 0.5);
+  border-bottom: 1px solid var(--border);
+}
+
+.cp-table th {
+  padding: 12px 20px;
+  text-align: left;
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.28em;
+  color: var(--muted);
+  font-weight: 500;
+  font-family: "Inter", sans-serif;
+}
+
+.cp-table td {
+  padding: 14px 20px;
+  color: var(--text);
+  border-bottom: 1px solid rgba(206, 200, 189, 0.5);
+}
+
+.cp-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.cp-table tbody tr:hover {
+  background: rgba(255, 255, 255, 0.4);
+}
+
+.cp-badge {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 999px;
+  font-size: 0.7rem;
+  text-transform: capitalize;
+  font-family: "Inter", sans-serif;
+}
+
+.cp-badge-pending  { background: #fef3c7; color: #92400e; }
+.cp-badge-approved { background: #d1fae5; color: #065f46; }
+.cp-badge-rejected { background: #fee2e2; color: #991b1b; }
+
+.cp-alert {
+  margin-top: 24px;
+  padding: 14px 20px;
+  border-radius: 8px;
+  font-size: 0.875rem;
+  border: 1px solid;
+}
+
+.cp-alert-warn {
+  background: #fffbeb;
+  border-color: #fbbf24;
+  color: #92400e;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.cp-alert-success {
+  background: #ecfdf5;
+  border-color: #6ee7b7;
+  color: #065f46;
+}
+
+.cp-empty {
+  padding: 60px 24px;
+  text-align: center;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+/* Multi-step form */
+.cp-steps {
+  display: flex;
+  gap: 4px;
+  margin-top: 32px;
+}
+
+.cp-step-seg {
+  flex: 1;
+  height: 3px;
+  border-radius: 999px;
+  background: var(--border);
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  transition: background 0.2s;
+}
+
+.cp-step-seg.active {
+  background: var(--brand);
+}
+
+.cp-step-name {
+  margin: 10px 0 0;
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+
+/* File / image upload */
+.cp-upload-row {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-top: 10px;
+}
+
+.cp-upload-btn {
+  padding: 10px 20px;
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  color: var(--muted);
+  font-family: "Inter", sans-serif;
+  font-size: 0.68rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.28em;
+  cursor: pointer;
+  transition: border-color 0.2s, color 0.2s;
+}
+
+.cp-upload-btn:hover {
+  border-color: var(--brand);
+  color: var(--brand);
+}
+
+.cp-upload-btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.cp-upload-done {
+  font-size: 0.8rem;
+  color: var(--brand);
+}
+
+/* Price field */
+.cp-price-wrap {
+  position: relative;
+}
+
+.cp-price-prefix {
+  position: absolute;
+  left: 18px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--muted);
+  font-family: "Libre Baskerville", Georgia, serif;
+  font-style: italic;
+  pointer-events: none;
+}
+
+.cp-price-input {
+  padding-left: 34px;
+}

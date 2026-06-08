@@ -31,54 +31,43 @@ export default function CreatorLoginPage() {
   }
 
   return (
-    <div className="flex min-h-screen items-center justify-center px-6 py-20">
-      <div className="w-full max-w-md">
-        <p className="text-sm uppercase tracking-[0.4em] text-accent-gold">Creator Portal</p>
-        <h1 className="mt-4 font-serif text-3xl text-secondary-100">Log in</h1>
-        <p className="mt-2 text-sm text-secondary-400">
+    <div className="cp-page">
+      <div className="cp-card">
+        <p className="cp-eyebrow">Creator Portal</p>
+        <h1 className="cp-title">Log in</h1>
+        <p className="cp-subtitle">
           Don&apos;t have an account?{' '}
-          <Link href="/creator/signup" className="text-accent-gold underline">
-            Sign up
-          </Link>
+          <Link href="/creator/signup">Sign up</Link>
         </p>
 
-        <form onSubmit={handleSubmit} className="mt-10 space-y-5">
-          <div>
-            <label className="block text-xs uppercase tracking-[0.3em] text-secondary-400">
-              Email
-            </label>
+        <form onSubmit={handleSubmit} className="cp-form">
+          <div className="cp-field">
+            <label className="cp-label">Email</label>
             <input
               type="email"
               required
               value={email}
               onChange={e => setEmail(e.target.value)}
-              className="mt-2 w-full rounded border border-secondary-800 bg-black/30 px-4 py-3 text-secondary-100 placeholder-secondary-600 focus:border-accent-gold focus:outline-none"
+              className="cp-input"
               placeholder="you@example.com"
             />
           </div>
 
-          <div>
-            <label className="block text-xs uppercase tracking-[0.3em] text-secondary-400">
-              Password
-            </label>
+          <div className="cp-field">
+            <label className="cp-label">Password</label>
             <input
               type="password"
               required
               value={password}
               onChange={e => setPassword(e.target.value)}
-              className="mt-2 w-full rounded border border-secondary-800 bg-black/30 px-4 py-3 text-secondary-100 placeholder-secondary-600 focus:border-accent-gold focus:outline-none"
+              className="cp-input"
+              placeholder="••••••••"
             />
           </div>
 
-          {error && (
-            <p className="text-sm text-red-400">{error}</p>
-          )}
+          {error && <p className="cp-error">{error}</p>}
 
-          <button
-            type="submit"
-            disabled={loading}
-            className="w-full rounded bg-accent-gold px-6 py-3 text-xs font-semibold uppercase tracking-[0.4em] text-black shadow-luxury transition hover:bg-accent-bronze disabled:opacity-50"
-          >
+          <button type="submit" disabled={loading} className="cp-btn cp-btn-full">
             {loading ? 'Logging in…' : 'Log In'}
           </button>
         </form>

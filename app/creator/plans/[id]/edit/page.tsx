@@ -49,11 +49,7 @@ export default function EditPlanPage() {
   useEffect(() => {
     async function load() {
       const supabase = getSupabaseBrowserClient()
-      const { data } = await supabase
-        .from('floorplan')
-        .select('*')
-        .eq('id', planId)
-        .single()
+      const { data } = await supabase.from('floorplan').select('*').eq('id', planId).single()
 
       if (data) {
         setForm({
@@ -139,81 +135,79 @@ export default function EditPlanPage() {
     router.push('/creator/dashboard?updated=1')
   }
 
-  const inputClass = 'mt-2 w-full rounded border border-secondary-800 bg-black/30 px-4 py-3 text-secondary-100 placeholder-secondary-600 focus:border-accent-gold focus:outline-none'
-  const labelClass = 'block text-xs uppercase tracking-[0.3em] text-secondary-400'
-
   if (loading) {
     return (
-      <div className="flex min-h-screen items-center justify-center">
-        <p className="text-secondary-400">Loading…</p>
+      <div style={{ minHeight: '60vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        <p style={{ color: 'var(--muted)' }}>Loading…</p>
       </div>
     )
   }
 
   return (
-    <div className="mx-auto max-w-2xl px-6 py-16">
-      <div className="mb-2 flex items-center justify-between">
-        <Link href="/creator/dashboard" className="text-xs uppercase tracking-[0.3em] text-secondary-600 hover:text-secondary-400">
+    <div style={{ maxWidth: 640, margin: '0 auto', padding: '56px 40px 80px' }}>
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 8 }}>
+        <Link href="/creator/dashboard" style={{ fontSize: '0.75rem', textTransform: 'uppercase', letterSpacing: '0.25em', color: 'var(--muted)', textDecoration: 'none' }}>
           ← Dashboard
         </Link>
-        <span className="text-xs text-secondary-600">Step {step + 1} of {STEPS.length}</span>
+        <span style={{ fontSize: '0.75rem', color: 'var(--muted)' }}>Step {step + 1} of {STEPS.length}</span>
       </div>
 
-      <p className="text-sm uppercase tracking-[0.4em] text-accent-gold">Creator Portal</p>
-      <h1 className="mt-2 font-serif text-3xl text-secondary-100">Edit Plan</h1>
-      <p className="mt-1 text-xs text-secondary-600">Editing: {form.title}</p>
+      <p className="cp-eyebrow" style={{ marginTop: 24 }}>Creator Portal</p>
+      <h1 style={{ margin: '12px 0 0', fontSize: '1.9rem' }}>Edit Plan</h1>
+      {form.title && <p style={{ margin: '6px 0 0', fontSize: '0.85rem', color: 'var(--muted)' }}>{form.title}</p>}
 
-      <div className="mt-8 flex gap-1">
+      <div className="cp-steps">
         {STEPS.map((s, i) => (
           <button
             key={s}
             onClick={() => setStep(i)}
-            className={`h-1 flex-1 rounded-full transition ${i <= step ? 'bg-accent-gold' : 'bg-secondary-800'}`}
+            className={`cp-step-seg${i <= step ? ' active' : ''}`}
+            aria-label={s}
           />
         ))}
       </div>
-      <p className="mt-3 text-sm text-secondary-400">{STEPS[step]}</p>
+      <p className="cp-step-name">{STEPS[step]}</p>
 
-      <div className="mt-8 space-y-6">
+      <div style={{ marginTop: 36, display: 'flex', flexDirection: 'column', gap: 28 }}>
         {step === 0 && (
           <>
-            <div>
-              <label className={labelClass}>Plan Title</label>
-              <input type="text" value={form.title} onChange={e => set('title', e.target.value)} className={inputClass} />
+            <div className="cp-field">
+              <label className="cp-label">Plan Title</label>
+              <input type="text" value={form.title} onChange={e => set('title', e.target.value)} className="cp-input" />
             </div>
-            <div>
-              <label className={labelClass}>URL Slug</label>
-              <input type="text" value={form.slug} onChange={e => set('slug', e.target.value)} className={inputClass} />
-              <p className="mt-1 text-xs text-secondary-600">/plans/{form.slug || '…'}</p>
+            <div className="cp-field">
+              <label className="cp-label">URL Slug</label>
+              <input type="text" value={form.slug} onChange={e => set('slug', e.target.value)} className="cp-input" />
+              <p className="cp-hint">/plans/{form.slug || '…'}</p>
             </div>
-            <div>
-              <label className={labelClass}>Description</label>
-              <textarea rows={6} value={form.intro} onChange={e => set('intro', e.target.value)} className={`${inputClass} resize-none`} />
+            <div className="cp-field">
+              <label className="cp-label">Description</label>
+              <textarea rows={6} value={form.intro} onChange={e => set('intro', e.target.value)} className="cp-input cp-textarea" />
             </div>
           </>
         )}
 
         {step === 1 && (
           <>
-            <div className="grid grid-cols-3 gap-4">
-              <div>
-                <label className={labelClass}>Bedrooms</label>
-                <input type="number" min={0} value={form.beds} onChange={e => set('beds', e.target.value)} className={inputClass} />
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: 16 }}>
+              <div className="cp-field">
+                <label className="cp-label">Bedrooms</label>
+                <input type="number" min={0} value={form.beds} onChange={e => set('beds', e.target.value)} className="cp-input" />
               </div>
-              <div>
-                <label className={labelClass}>Bathrooms</label>
-                <input type="number" min={0} step={0.5} value={form.baths} onChange={e => set('baths', e.target.value)} className={inputClass} />
+              <div className="cp-field">
+                <label className="cp-label">Bathrooms</label>
+                <input type="number" min={0} step={0.5} value={form.baths} onChange={e => set('baths', e.target.value)} className="cp-input" />
               </div>
-              <div>
-                <label className={labelClass}>Area (sq ft)</label>
-                <input type="number" min={0} value={form.area} onChange={e => set('area', e.target.value)} className={inputClass} />
+              <div className="cp-field">
+                <label className="cp-label">Sq Ft</label>
+                <input type="number" min={0} value={form.area} onChange={e => set('area', e.target.value)} className="cp-input" />
               </div>
             </div>
-            <div>
-              <label className={labelClass}>Base Price (USD)</label>
-              <div className="relative mt-2">
-                <span className="absolute left-4 top-1/2 -translate-y-1/2 text-secondary-400">$</span>
-                <input type="number" min={0} step={1} value={form.price} onChange={e => set('price', e.target.value)} className={`${inputClass} mt-0 pl-8`} />
+            <div className="cp-field">
+              <label className="cp-label">Base Price (USD)</label>
+              <div className="cp-price-wrap">
+                <span className="cp-price-prefix">$</span>
+                <input type="number" min={0} step={1} value={form.price} onChange={e => set('price', e.target.value)} className="cp-input cp-price-input" />
               </div>
             </div>
           </>
@@ -248,18 +242,16 @@ export default function EditPlanPage() {
         )}
       </div>
 
-      {error && <p className="mt-6 text-sm text-red-400">{error}</p>}
+      {error && <p className="cp-error" style={{ marginTop: 20 }}>{error}</p>}
 
-      <div className="mt-10 flex items-center justify-between">
-        <button onClick={() => setStep(s => Math.max(0, s - 1))} disabled={step === 0} className="rounded border border-secondary-800 px-5 py-2.5 text-xs uppercase tracking-[0.3em] text-secondary-400 transition hover:border-secondary-600 disabled:opacity-30">
+      <div className="cp-btn-row">
+        <button onClick={() => setStep(s => Math.max(0, s - 1))} disabled={step === 0} className="cp-btn-outline">
           Back
         </button>
         {step < STEPS.length - 1 ? (
-          <button onClick={() => setStep(s => s + 1)} className="rounded bg-accent-gold px-6 py-2.5 text-xs font-semibold uppercase tracking-[0.4em] text-black shadow-luxury transition hover:bg-accent-bronze">
-            Continue
-          </button>
+          <button onClick={() => setStep(s => s + 1)} className="cp-btn">Continue</button>
         ) : (
-          <button onClick={handleSubmit} disabled={submitting} className="rounded bg-accent-gold px-6 py-2.5 text-xs font-semibold uppercase tracking-[0.4em] text-black shadow-luxury transition hover:bg-accent-bronze disabled:opacity-50">
+          <button onClick={handleSubmit} disabled={submitting} className="cp-btn">
             {submitting ? 'Saving…' : 'Save Changes'}
           </button>
         )}
@@ -271,15 +263,15 @@ export default function EditPlanPage() {
 function ImageUploadField({ label, hint, value, uploading, onFile }: { label: string; hint: string; value: string; uploading: boolean; onFile: (f: File) => void }) {
   const ref = useRef<HTMLInputElement>(null)
   return (
-    <div>
-      <label className="block text-xs uppercase tracking-[0.3em] text-secondary-400">{label}</label>
-      {hint && <p className="mt-0.5 text-xs text-secondary-600">{hint}</p>}
-      <div className="mt-2 flex items-center gap-4">
-        <button type="button" onClick={() => ref.current?.click()} disabled={uploading} className="rounded border border-secondary-800 px-4 py-2 text-xs uppercase tracking-[0.3em] text-secondary-400 transition hover:border-secondary-600 hover:text-secondary-200 disabled:opacity-50">
+    <div className="cp-field">
+      <label className="cp-label">{label}</label>
+      {hint && <p className="cp-hint" style={{ margin: '0 0 4px' }}>{hint}</p>}
+      <div className="cp-upload-row">
+        <button type="button" onClick={() => ref.current?.click()} disabled={uploading} className="cp-upload-btn">
           {uploading ? 'Uploading…' : value ? 'Replace' : 'Choose File'}
         </button>
-        {value && <span className="text-xs text-accent-gold">✓ Uploaded</span>}
-        <input ref={ref} type="file" accept="image/*" className="hidden" onChange={e => { const f = e.target.files?.[0]; if (f) onFile(f) }} />
+        {value && <span className="cp-upload-done">✓ Uploaded</span>}
+        <input ref={ref} type="file" accept="image/*" style={{ display: 'none' }} onChange={e => { const f = e.target.files?.[0]; if (f) onFile(f) }} />
       </div>
     </div>
   )
@@ -288,15 +280,15 @@ function ImageUploadField({ label, hint, value, uploading, onFile }: { label: st
 function FileUploadField({ label, hint, fileType, filePath, uploading, onFile }: { label: string; hint: string; fileType: string; filePath?: string; uploading: boolean; onFile: (f: File) => void }) {
   const ref = useRef<HTMLInputElement>(null)
   return (
-    <div>
-      <label className="block text-xs uppercase tracking-[0.3em] text-secondary-400">{label}</label>
-      {hint && <p className="mt-0.5 text-xs text-secondary-600">{hint}</p>}
-      <div className="mt-2 flex items-center gap-4">
-        <button type="button" onClick={() => ref.current?.click()} disabled={uploading} className="rounded border border-secondary-800 px-4 py-2 text-xs uppercase tracking-[0.3em] text-secondary-400 transition hover:border-secondary-600 hover:text-secondary-200 disabled:opacity-50">
+    <div className="cp-field">
+      <label className="cp-label">{label}</label>
+      {hint && <p className="cp-hint" style={{ margin: '0 0 4px' }}>{hint}</p>}
+      <div className="cp-upload-row">
+        <button type="button" onClick={() => ref.current?.click()} disabled={uploading} className="cp-upload-btn">
           {uploading ? 'Uploading…' : filePath ? 'Replace' : 'Choose File'}
         </button>
-        {filePath && <span className="text-xs text-accent-gold">✓ Uploaded</span>}
-        <input ref={ref} type="file" className="hidden" accept={fileType === 'pdf' ? '.pdf' : '.dwg,.dxf'} onChange={e => { const f = e.target.files?.[0]; if (f) onFile(f) }} />
+        {filePath && <span className="cp-upload-done">✓ Uploaded</span>}
+        <input ref={ref} type="file" style={{ display: 'none' }} accept={fileType === 'pdf' ? '.pdf' : '.dwg,.dxf'} onChange={e => { const f = e.target.files?.[0]; if (f) onFile(f) }} />
       </div>
     </div>
   )

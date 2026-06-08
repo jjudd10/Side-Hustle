@@ -42,7 +42,7 @@ export async function POST(request: NextRequest) {
   const origin = `${proto}://${host}`
 
   const session = await stripe.checkout.sessions.create({
-    ui_mode: 'embedded_page',
+    ui_mode: 'embedded',
     mode: 'payment',
     line_items: [
       {

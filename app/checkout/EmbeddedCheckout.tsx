@@ -15,7 +15,7 @@ export default function EmbeddedCheckout({ clientSecret }: { clientSecret: strin
 
     loadStripe(PUBLISHABLE_KEY).then((stripe) => {
       if (!stripe) return
-      stripe.createEmbeddedCheckoutPage({ clientSecret }).then((checkout) => {
+      stripe.initEmbeddedCheckout({ clientSecret }).then((checkout) => {
         checkoutRef.current = checkout
         checkout.mount('#checkout')
       })

@@ -41,7 +41,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <footer className="site-footer">
           <div className="container">
             <p style={{ fontSize: '0.90rem' }}> Questions? Email us at info@homeintime.cc </p>
-            <p>© 2025 - {new Date().getFullYear()} Strictly Business L.C. All rights reserved.</p>
+            <p>© E{new Date().getFullYear()} Strictly Business L.C. All rights reserved.</p>
+            <p style={{ fontSize: '0.85rem' }}>
+              <Link href="/creator-portal" style={{ color: 'inherit', textDecoration: 'underline', opacity: 0.7 }}>
+                Creator Portal
+              </Link>
+            </p>
           </div>
         </footer>
         <Analytics />

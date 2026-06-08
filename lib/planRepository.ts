@@ -190,7 +190,11 @@ export async function getPlans(): Promise<Plan[]> {
     return []
   }
 
-  const { data, error } = await supabase.from(tableName).select('*').order('created_at', { ascending: true })
+  const { data, error } = await supabase
+    .from(tableName)
+    .select('*')
+    .or('status.eq.approved,status.is.null')
+    .order('created_at', { ascending: true })
 
   if (error) {
     throw new Error(`Failed to load plans: ${error.message}`)
@@ -220,7 +224,10 @@ export async function getPlanSlugs(): Promise<string[]> {
     return []
   }
 
-  const { data, error } = await supabase.from(tableName).select('slug')
+  const { data, error } = await supabase
+    .from(tableName)
+    .select('slug')
+    .or('status.eq.approved,status.is.null')
   if (error) {
     throw new Error(`Failed to fetch plan slugs: ${error.message}`)
   }

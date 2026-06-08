@@ -57,7 +57,6 @@ export default function NewPlanPage() {
     setUploading(u => ({ ...u, [field]: false }))
     if (!res.ok) { setError('Image upload failed.'); return }
     const { webUrl, thumbUrl } = await res.json()
-    // thumbnail stores the thumb variant; all other images store the web variant
     setForm(prev => ({ ...prev, [field]: field === 'thumbnail' ? thumbUrl : webUrl }))
   }
 
@@ -104,69 +103,61 @@ export default function NewPlanPage() {
     router.push('/creator/dashboard?submitted=1')
   }
 
-  const inputClass = 'mt-2 w-full rounded border border-secondary-800 bg-black/30 px-4 py-3 text-secondary-100 placeholder-secondary-600 focus:border-accent-gold focus:outline-none'
-  const labelClass = 'block text-xs uppercase tracking-[0.3em] text-secondary-400'
-
   return (
-    <div className="mx-auto max-w-2xl px-6 py-16">
-      <div className="mb-2 flex items-center justify-between">
-        <Link href="/creator/dashboard" className="text-xs uppercase tracking-[0.3em] text-secondary-600 hover:text-secondary-400">
+    <div style={{ maxWidth: 640, margin: '0 auto', padding: '56px 40px 80px' }}>
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 8 }}>
+        <Link href="/creator/dashboard" style={{ fontSize: '0.75rem', textTransform: 'uppercase', letterSpacing: '0.25em', color: 'var(--muted)', textDecoration: 'none' }}>
           ← Dashboard
         </Link>
-        <span className="text-xs text-secondary-600">Step {step + 1} of {STEPS.length}</span>
+        <span style={{ fontSize: '0.75rem', color: 'var(--muted)' }}>Step {step + 1} of {STEPS.length}</span>
       </div>
 
-      <p className="text-sm uppercase tracking-[0.4em] text-accent-gold">Creator Portal</p>
-      <h1 className="mt-2 font-serif text-3xl text-secondary-100">Submit a Plan</h1>
+      <p className="cp-eyebrow" style={{ marginTop: 24 }}>Creator Portal</p>
+      <h1 style={{ margin: '12px 0 0', fontSize: '1.9rem' }}>Submit a Plan</h1>
 
-      {/* Step tabs */}
-      <div className="mt-8 flex gap-1">
+      {/* Step progress */}
+      <div className="cp-steps">
         {STEPS.map((s, i) => (
           <button
             key={s}
             onClick={() => setStep(i)}
-            className={`h-1 flex-1 rounded-full transition ${i <= step ? 'bg-accent-gold' : 'bg-secondary-800'}`}
+            className={`cp-step-seg${i <= step ? ' active' : ''}`}
+            aria-label={s}
           />
         ))}
       </div>
-      <p className="mt-3 text-sm text-secondary-400">{STEPS[step]}</p>
+      <p className="cp-step-name">{STEPS[step]}</p>
 
-      <div className="mt-8 space-y-6">
-        {/* Step 0 — Basic Info & Description */}
+      <div style={{ marginTop: 36, display: 'flex', flexDirection: 'column', gap: 28 }}>
+        {/* Step 0 — Basic Info */}
         {step === 0 && (
           <>
-            <div>
-              <label className={labelClass}>Plan Title</label>
+            <div className="cp-field">
+              <label className="cp-label">Plan Title</label>
               <input
                 type="text" required value={form.title}
                 onChange={e => set('title', e.target.value)}
-                className={inputClass} placeholder="e.g. The Willow Farmhouse"
+                className="cp-input" placeholder="e.g. The Willow Farmhouse"
               />
             </div>
-            <div>
-              <label className={labelClass}>
-                URL Slug{' '}
-                <span className="normal-case tracking-normal text-secondary-600">(auto-generated, editable)</span>
+            <div className="cp-field">
+              <label className="cp-label">
+                URL Slug <span className="cp-label-opt">(auto-generated)</span>
               </label>
               <input
                 type="text" value={form.slug}
                 onChange={e => set('slug', e.target.value)}
-                className={inputClass} placeholder="the-willow-farmhouse"
+                className="cp-input" placeholder="the-willow-farmhouse"
               />
-              <p className="mt-1 text-xs text-secondary-600">
-                This becomes the plan's URL: /plans/{form.slug || 'your-plan-slug'}
-              </p>
+              <p className="cp-hint">/plans/{form.slug || 'your-plan-slug'}</p>
             </div>
-            <div>
-              <label className={labelClass}>
-                Description{' '}
-                <span className="normal-case tracking-normal text-secondary-600">(intro / overview)</span>
-              </label>
+            <div className="cp-field">
+              <label className="cp-label">Description</label>
               <textarea
                 rows={6} value={form.intro}
                 onChange={e => set('intro', e.target.value)}
-                className={`${inputClass} resize-none`}
-                placeholder="Describe the plan's character, lifestyle fit, and key features. Separate paragraphs with a blank line."
+                className="cp-input cp-textarea"
+                placeholder="Describe the plan's character, lifestyle fit, and key features."
               />
             </div>
           </>
@@ -175,55 +166,41 @@ export default function NewPlanPage() {
         {/* Step 1 — Specs & Pricing */}
         {step === 1 && (
           <>
-            <div className="grid grid-cols-3 gap-4">
-              <div>
-                <label className={labelClass}>Bedrooms</label>
-                <input
-                  type="number" min={0} value={form.beds}
-                  onChange={e => set('beds', e.target.value)}
-                  className={inputClass} placeholder="4"
-                />
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: 16 }}>
+              <div className="cp-field">
+                <label className="cp-label">Bedrooms</label>
+                <input type="number" min={0} value={form.beds} onChange={e => set('beds', e.target.value)} className="cp-input" placeholder="4" />
               </div>
-              <div>
-                <label className={labelClass}>Bathrooms</label>
-                <input
-                  type="number" min={0} step={0.5} value={form.baths}
-                  onChange={e => set('baths', e.target.value)}
-                  className={inputClass} placeholder="2.5"
-                />
+              <div className="cp-field">
+                <label className="cp-label">Bathrooms</label>
+                <input type="number" min={0} step={0.5} value={form.baths} onChange={e => set('baths', e.target.value)} className="cp-input" placeholder="2.5" />
               </div>
-              <div>
-                <label className={labelClass}>Area (sq ft)</label>
-                <input
-                  type="number" min={0} value={form.area}
-                  onChange={e => set('area', e.target.value)}
-                  className={inputClass} placeholder="2400"
-                />
+              <div className="cp-field">
+                <label className="cp-label">Sq Ft</label>
+                <input type="number" min={0} value={form.area} onChange={e => set('area', e.target.value)} className="cp-input" placeholder="2400" />
               </div>
             </div>
-            <div>
-              <label className={labelClass}>Base Price (USD)</label>
-              <div className="relative mt-2">
-                <span className="absolute left-4 top-1/2 -translate-y-1/2 text-secondary-400">$</span>
+            <div className="cp-field">
+              <label className="cp-label">Base Price (USD)</label>
+              <div className="cp-price-wrap">
+                <span className="cp-price-prefix">$</span>
                 <input
                   type="number" min={0} step={1} value={form.price}
                   onChange={e => set('price', e.target.value)}
-                  className={`${inputClass} mt-0 pl-8`} placeholder="299"
+                  className="cp-input cp-price-input" placeholder="299"
                 />
               </div>
-              <p className="mt-1 text-xs text-secondary-600">
-                Amount customers pay. You receive a portion after platform and Stripe fees.
-              </p>
+              <p className="cp-hint">Amount customers pay. You receive a portion after platform and Stripe fees.</p>
             </div>
           </>
         )}
 
-        {/* Step 2 — Public Images */}
+        {/* Step 2 — Images */}
         {step === 2 && (
           <>
             {(
               [
-                { field: 'thumbnail' as keyof FormState, label: 'Thumbnail', hint: 'Small card image (~400px wide). Optimized automatically.' },
+                { field: 'thumbnail' as keyof FormState, label: 'Thumbnail', hint: 'Small card image (~400px). Optimized automatically.' },
                 { field: 'hero_img' as keyof FormState, label: 'Hero Image', hint: 'Main large image shown at the top of the plan page.' },
                 { field: 'second_img' as keyof FormState, label: 'Gallery Image 2', hint: '' },
                 { field: 'third_img' as keyof FormState, label: 'Gallery Image 3', hint: '' },
@@ -231,9 +208,7 @@ export default function NewPlanPage() {
               ] as { field: keyof FormState; label: string; hint: string }[]
             ).map(({ field, label, hint }) => (
               <ImageUploadField
-                key={field}
-                label={label}
-                hint={hint}
+                key={field} label={label} hint={hint}
                 value={form[field] as string}
                 uploading={!!uploading[field]}
                 onFile={file => uploadImage(field, file)}
@@ -242,15 +217,15 @@ export default function NewPlanPage() {
           </>
         )}
 
-        {/* Step 3 — Deliverable Files */}
+        {/* Step 3 — Files */}
         {step === 3 && (
           <>
-            <p className="text-sm text-secondary-400">
-              These files are stored privately and only delivered to customers after purchase via a signed download link.
+            <p style={{ fontSize: '0.875rem', color: 'var(--muted)', margin: 0 }}>
+              These files are stored privately and delivered to customers via a signed link after purchase.
             </p>
             <FileUploadField
               label="PDF Floor Plan"
-              hint="The primary deliverable. Customers will receive this immediately after purchase."
+              hint="The primary deliverable — customers receive this immediately after purchase."
               fileType="pdf"
               filePath={form.file_paths.pdf}
               uploading={!!uploading['pdf']}
@@ -258,7 +233,7 @@ export default function NewPlanPage() {
             />
             <FileUploadField
               label="CAD Files"
-              hint="DWG or DXF file. Optional — upload if you're including editable CAD files."
+              hint="DWG or DXF. Optional — include if you're offering editable CAD files."
               fileType="cad"
               filePath={form.file_paths.cad}
               uploading={!!uploading['cad']}
@@ -268,13 +243,13 @@ export default function NewPlanPage() {
         )}
       </div>
 
-      {error && <p className="mt-6 text-sm text-red-400">{error}</p>}
+      {error && <p className="cp-error" style={{ marginTop: 20 }}>{error}</p>}
 
-      <div className="mt-10 flex items-center justify-between">
+      <div className="cp-btn-row">
         <button
           onClick={() => setStep(s => Math.max(0, s - 1))}
           disabled={step === 0}
-          className="rounded border border-secondary-800 px-5 py-2.5 text-xs uppercase tracking-[0.3em] text-secondary-400 transition hover:border-secondary-600 disabled:opacity-30"
+          className="cp-btn-outline"
         >
           Back
         </button>
@@ -283,7 +258,7 @@ export default function NewPlanPage() {
           <button
             onClick={() => setStep(s => s + 1)}
             disabled={step === 0 && !form.title}
-            className="rounded bg-accent-gold px-6 py-2.5 text-xs font-semibold uppercase tracking-[0.4em] text-black shadow-luxury transition hover:bg-accent-bronze disabled:opacity-50"
+            className="cp-btn"
           >
             Continue
           </button>
@@ -291,7 +266,7 @@ export default function NewPlanPage() {
           <button
             onClick={handleSubmit}
             disabled={submitting || !form.title}
-            className="rounded bg-accent-gold px-6 py-2.5 text-xs font-semibold uppercase tracking-[0.4em] text-black shadow-luxury transition hover:bg-accent-bronze disabled:opacity-50"
+            className="cp-btn"
           >
             {submitting ? 'Submitting…' : 'Submit for Review'}
           </button>
@@ -304,35 +279,25 @@ export default function NewPlanPage() {
 function ImageUploadField({
   label, hint, value, uploading, onFile,
 }: {
-  label: string
-  hint: string
-  value: string
-  uploading: boolean
-  onFile: (file: File) => void
+  label: string; hint: string; value: string; uploading: boolean; onFile: (file: File) => void
 }) {
   const ref = useRef<HTMLInputElement>(null)
   return (
-    <div>
-      <label className="block text-xs uppercase tracking-[0.3em] text-secondary-400">{label}</label>
-      {hint && <p className="mt-0.5 text-xs text-secondary-600">{hint}</p>}
-      <div className="mt-2 flex items-center gap-4">
+    <div className="cp-field">
+      <label className="cp-label">{label}</label>
+      {hint && <p className="cp-hint" style={{ margin: '0 0 4px' }}>{hint}</p>}
+      <div className="cp-upload-row">
         <button
           type="button"
           onClick={() => ref.current?.click()}
           disabled={uploading}
-          className="rounded border border-secondary-800 px-4 py-2 text-xs uppercase tracking-[0.3em] text-secondary-400 transition hover:border-secondary-600 hover:text-secondary-200 disabled:opacity-50"
+          className="cp-upload-btn"
         >
           {uploading ? 'Uploading…' : value ? 'Replace' : 'Choose File'}
         </button>
-        {value && (
-          <span className="truncate text-xs text-accent-gold">
-            ✓ Uploaded
-          </span>
-        )}
-        <input
-          ref={ref} type="file" accept="image/*" className="hidden"
-          onChange={e => { const f = e.target.files?.[0]; if (f) onFile(f) }}
-        />
+        {value && <span className="cp-upload-done">✓ Uploaded</span>}
+        <input ref={ref} type="file" accept="image/*" className="hidden" style={{ display: 'none' }}
+          onChange={e => { const f = e.target.files?.[0]; if (f) onFile(f) }} />
       </div>
     </div>
   )
@@ -341,35 +306,26 @@ function ImageUploadField({
 function FileUploadField({
   label, hint, fileType, filePath, uploading, onFile,
 }: {
-  label: string
-  hint: string
-  fileType: string
-  filePath?: string
-  uploading: boolean
-  onFile: (file: File) => void
+  label: string; hint: string; fileType: string; filePath?: string; uploading: boolean; onFile: (file: File) => void
 }) {
   const ref = useRef<HTMLInputElement>(null)
   return (
-    <div>
-      <label className="block text-xs uppercase tracking-[0.3em] text-secondary-400">{label}</label>
-      {hint && <p className="mt-0.5 text-xs text-secondary-600">{hint}</p>}
-      <div className="mt-2 flex items-center gap-4">
+    <div className="cp-field">
+      <label className="cp-label">{label}</label>
+      {hint && <p className="cp-hint" style={{ margin: '0 0 4px' }}>{hint}</p>}
+      <div className="cp-upload-row">
         <button
           type="button"
           onClick={() => ref.current?.click()}
           disabled={uploading}
-          className="rounded border border-secondary-800 px-4 py-2 text-xs uppercase tracking-[0.3em] text-secondary-400 transition hover:border-secondary-600 hover:text-secondary-200 disabled:opacity-50"
+          className="cp-upload-btn"
         >
           {uploading ? 'Uploading…' : filePath ? 'Replace' : 'Choose File'}
         </button>
-        {filePath && (
-          <span className="text-xs text-accent-gold">✓ Uploaded</span>
-        )}
-        <input
-          ref={ref} type="file" className="hidden"
+        {filePath && <span className="cp-upload-done">✓ Uploaded</span>}
+        <input ref={ref} type="file" className="hidden" style={{ display: 'none' }}
           accept={fileType === 'pdf' ? '.pdf' : '.dwg,.dxf'}
-          onChange={e => { const f = e.target.files?.[0]; if (f) onFile(f) }}
-        />
+          onChange={e => { const f = e.target.files?.[0]; if (f) onFile(f) }} />
       </div>
     </div>
   )
