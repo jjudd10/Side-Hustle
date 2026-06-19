@@ -30,7 +30,55 @@ export async function middleware(request: NextRequest) {
 
   const { pathname } = request.nextUrl
 
-  // Protect all creator routes except signup and login
+  // ── Admin routes ──────────────────────────────────────────────
+  if (pathname.startsWith('/admin')) {
+    const adminPublicPaths = ['/admin/login', '/admin/totp-setup', '/admin/totp-verify']
+    const isPublicAdminPath = adminPublicPaths.some(p => pathname.startsWith(p))
+
+    // Not logged in
+    if (!user) {
+      if (isPublicAdminPath) return supabaseResponse
+      const url = request.nextUrl.clone()
+      url.pathname = '/admin/login'
+      return NextResponse.redirect(url)
+    }
+
+    // Logged in but not the admin account
+    const isAdmin = user.email === process.env.ADMIN_EMAIL
+    if (!isAdmin) {
+      if (isPublicAdminPath) return supabaseResponse
+      const url = request.nextUrl.clone()
+      url.pathname = '/admin/login'
+      return NextResponse.redirect(url)
+    }
+
+    // Authenticated admin — check MFA assurance level
+    const { data: aalData } = await supabase.auth.mfa.getAuthenticatorAssuranceLevel()
+    const currentLevel = aalData?.currentLevel
+    const nextLevel = aalData?.nextLevel
+
+    // Already aal2 on a public auth page → send to dashboard
+    if (isPublicAdminPath && currentLevel === 'aal2') {
+      const url = request.nextUrl.clone()
+      url.pathname = '/admin/dashboard'
+      return NextResponse.redirect(url)
+    }
+
+    // Allow public admin paths (login / totp-setup / totp-verify) through
+    if (isPublicAdminPath) return supabaseResponse
+
+    // Protected admin pages require aal2
+    if (currentLevel !== 'aal2') {
+      const url = request.nextUrl.clone()
+      // nextLevel === 'aal2' means TOTP is enrolled but not yet verified this session
+      url.pathname = nextLevel === 'aal2' ? '/admin/totp-verify' : '/admin/totp-setup'
+      return NextResponse.redirect(url)
+    }
+
+    return supabaseResponse
+  }
+
+  // ── Creator routes ────────────────────────────────────────────
   const isCreatorRoute = pathname.startsWith('/creator')
   const isPublicCreatorRoute =
     pathname === '/creator/signup' || pathname === '/creator/login'
