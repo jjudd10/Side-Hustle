@@ -79,7 +79,7 @@ export async function middleware(request: NextRequest) {
   }
 
   // ── Creator routes ────────────────────────────────────────────
-  const isCreatorRoute = pathname.startsWith('/creator')
+  const isCreatorRoute = pathname === '/creator' || pathname.startsWith('/creator/')
   const isPublicCreatorRoute =
     pathname === '/creator/signup' || pathname === '/creator/login'
 

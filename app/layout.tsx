@@ -5,6 +5,7 @@ import type { Metadata } from 'next'
 import { Analytics } from '@vercel/analytics/next'
 import logoMark from '../lib/Logo - Wireframe - Low Detail - v1.svg'
 import NavigationLoader from './components/NavigationLoader'
+import { ButtonHoverEffect } from '../components/ButtonHoverEffect'
 
 export const metadata: Metadata = {
   title: 'Home in Time - Premium Floorplans',
@@ -16,6 +17,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en">
       <body>
         <NavigationLoader />
+        <ButtonHoverEffect />
         <header className="site-header">
           <div className="container header-inner">
             <Link className="brand" href="/">
@@ -43,7 +45,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             <p style={{ fontSize: '0.90rem' }}> Questions? Email us at info@homeintime.cc </p>
             <p>© 2025 - {new Date().getFullYear()} Strictly Business L.C. All rights reserved.</p>
             <p style={{ fontSize: '0.85rem' }}>
-              <Link href="/creator-portal" style={{ color: 'inherit', textDecoration: 'underline', opacity: 0.7 }}>
+              <Link href="/creator/login" style={{ color: 'inherit', textDecoration: 'underline', opacity: 0.7 }}>
                 Creator Portal
               </Link>
             </p>

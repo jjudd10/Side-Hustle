@@ -100,12 +100,14 @@ h1, h2, h3, h4, h5, h6 {
   border-radius: 999px;
   text-decoration: none;
   font-weight: 600;
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
 }
 .btn-primary {
   background: linear-gradient(90deg, var(--brand) 0%, var(--brand-600) 100%);
   color: #f7f0e2;
 }
-.btn-primary:hover { filter: brightness(1.05); }
 .btn-secondary { border: 1px solid var(--border); color: var(--text); }
 .btn-secondary:hover { background: #18202e; }
 
