@@ -67,7 +67,7 @@ export async function POST(req: NextRequest) {
     .single()
 
   if (!plan) {
-    console.error('Plan not found for id', planId)
+    console.error('Plan not found for slug', planSlug)
     return NextResponse.json({ received: true })
   }
 
