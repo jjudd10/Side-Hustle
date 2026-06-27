@@ -1,17 +1,22 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { getSupabaseServiceClient } from '@/lib/supabaseServerClient'
+import { getSupabaseServerClient, getSupabaseServiceClient } from '@/lib/supabaseServerClient'
+
+async function getAuthenticatedUser() {
+  const supabase = await getSupabaseServerClient()
+  const { data: { user } } = await supabase.auth.getUser()
+  return user
+}
 
 export async function POST(req: NextRequest) {
-  const { id, display_name, bio } = await req.json()
+  const user = await getAuthenticatedUser()
+  if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
 
-  if (!id) {
-    return NextResponse.json({ error: 'Missing user id' }, { status: 400 })
-  }
+  const { display_name, bio } = await req.json()
 
   const supabase = getSupabaseServiceClient()
   const { error } = await supabase
     .from('creators')
-    .insert({ id, display_name, bio })
+    .insert({ id: user.id, display_name, bio })
 
   if (error) {
     return NextResponse.json({ error: error.message }, { status: 500 })
@@ -21,17 +26,16 @@ export async function POST(req: NextRequest) {
 }
 
 export async function PATCH(req: NextRequest) {
-  const { id, display_name, bio } = await req.json()
+  const user = await getAuthenticatedUser()
+  if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
 
-  if (!id) {
-    return NextResponse.json({ error: 'Missing user id' }, { status: 400 })
-  }
+  const { display_name, bio } = await req.json()
 
   const supabase = getSupabaseServiceClient()
   const { error } = await supabase
     .from('creators')
     .update({ display_name, bio })
-    .eq('id', id)
+    .eq('id', user.id)
 
   if (error) {
     return NextResponse.json({ error: error.message }, { status: 500 })

@@ -44,7 +44,7 @@ export async function middleware(request: NextRequest) {
     }
 
     // Logged in but not the admin account
-    const isAdmin = user.email === process.env.ADMIN_EMAIL
+    const isAdmin = user.email?.toLowerCase() === process.env.ADMIN_EMAIL?.toLowerCase()
     if (!isAdmin) {
       if (isPublicAdminPath) return supabaseResponse
       const url = request.nextUrl.clone()

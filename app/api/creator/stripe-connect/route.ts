@@ -36,7 +36,7 @@ export async function POST(req: NextRequest) {
       .eq('id', user.id)
   }
 
-  const origin = req.nextUrl.origin
+  const origin = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://homeintime.cc'
   const accountLink = await stripe.accountLinks.create({
     account: accountId,
     refresh_url: `${origin}/creator/stripe-connect?refresh=1`,

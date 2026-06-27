@@ -13,9 +13,18 @@ const mimeTypes: Record<string, string> = {
   '.webp': 'image/webp',
 }
 
+const ALLOWED_EXTENSIONS = new Set(Object.keys(mimeTypes))
+
 const getMimeType = (filename: string) => mimeTypes[path.extname(filename).toLowerCase()] ?? 'application/octet-stream'
 
-const isSafeFilename = (filename: string) => path.basename(filename) === filename && !filename.includes('..')
+function isSafeFilename(filename: string): boolean {
+  // Must be a bare filename (no slashes, no ..)
+  if (path.basename(filename) !== filename) return false
+  if (filename.includes('..')) return false
+  // Must be a known image extension — blocks serving .ts, .js, .json, etc.
+  if (!ALLOWED_EXTENSIONS.has(path.extname(filename).toLowerCase())) return false
+  return true
+}
 
 export async function GET(
   _request: Request,

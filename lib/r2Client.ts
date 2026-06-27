@@ -22,7 +22,7 @@ export async function generatePresignedUploadUrl(
   bucket: string,
   key: string,
   contentType: string,
-  expiresIn = 300
+  expiresIn = 3600
 ): Promise<string> {
   const command = new PutObjectCommand({ Bucket: bucket, Key: key, ContentType: contentType })
   return getSignedUrl(getClient(), command, { expiresIn })
@@ -38,7 +38,9 @@ export async function generateSignedDownloadUrl(
 }
 
 export function publicImageUrl(key: string): string {
-  return `${process.env.R2_PUBLIC_URL}/${key}`
+  const base = (process.env.R2_PUBLIC_URL ?? '').replace(/\/$/, '')
+  const origin = base.startsWith('http') ? base : `https://${base}`
+  return `${origin}/${key}`
 }
 
 export const PUBLIC_BUCKET = () => process.env.R2_PUBLIC_BUCKET!

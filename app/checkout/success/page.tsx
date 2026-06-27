@@ -38,11 +38,11 @@ export default async function CheckoutSuccessPage({ searchParams }: Props) {
           plan details and next steps.
         </p>
         <div className="checkout-success-actions">
-          <Link className="btn btn-primary" href="/gallery">
-            Browse More Plans
+          <Link className="btn btn-primary" href={`/orders/${session_id}`}>
+            View & Download Files
           </Link>
-          <Link className="btn btn-secondary" href="/">
-            Return Home
+          <Link className="btn btn-secondary" href="/gallery">
+            Browse More Plans
           </Link>
         </div>
       </div>

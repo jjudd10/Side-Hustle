@@ -25,7 +25,7 @@ export async function POST(req: NextRequest) {
 
   if (!title) return NextResponse.json({ error: 'Title is required' }, { status: 400 })
 
-  const slug = rawSlug?.trim() || slugify(title)
+  const slug = slugify(rawSlug?.trim() || title)
 
   const service = getSupabaseServiceClient()
   const { data, error } = await service

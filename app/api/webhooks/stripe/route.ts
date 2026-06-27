@@ -40,11 +40,11 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ received: true })
   }
 
-  const planId = session.metadata?.planId
+  const planSlug = session.metadata?.planSlug
   const customerEmail = session.customer_details?.email
 
-  if (!planId || !customerEmail) {
-    console.error('Webhook missing planId or customerEmail', session.id)
+  if (!planSlug || !customerEmail) {
+    console.error('Webhook missing planSlug or customerEmail', session.id)
     return NextResponse.json({ received: true })
   }
 
@@ -59,11 +59,11 @@ export async function POST(req: NextRequest) {
 
   if (existing) return NextResponse.json({ received: true })
 
-  // Fetch plan + creator
+  // Fetch plan + creator by slug (slug is stable and present in metadata)
   const { data: plan } = await service
     .from('floorplan')
     .select('id, title, file_paths, creator_id, creators(stripe_account_id)')
-    .eq('id', planId)
+    .eq('slug', planSlug)
     .single()
 
   if (!plan) {

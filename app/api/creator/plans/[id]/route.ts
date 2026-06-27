@@ -1,6 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getSupabaseServerClient, getSupabaseServiceClient } from '@/lib/supabaseServerClient'
 
+function slugify(s: string): string {
+  return s.toLowerCase().trim().replace(/[^a-z0-9\s-]/g, '').replace(/\s+/g, '-').replace(/-+/g, '-')
+}
+
 export async function PUT(
   req: NextRequest,
   { params }: { params: Promise<{ id: string }> }
@@ -35,7 +39,7 @@ export async function PUT(
     .from('floorplan')
     .update({
       title: title ?? undefined,
-      slug: slug ?? undefined,
+      slug: slug ? slugify(slug) : undefined,
       intro: intro ?? undefined,
       beds: beds ?? undefined,
       baths: baths ?? undefined,

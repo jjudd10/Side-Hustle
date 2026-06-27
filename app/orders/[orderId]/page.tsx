@@ -5,16 +5,23 @@ import { generateSignedDownloadUrl, PRIVATE_BUCKET } from '@/lib/r2Client'
 
 export const dynamic = 'force-dynamic'
 
+// orderId here is actually a Stripe session ID (e.g. cs_live_...) — a long
+// unguessable string that only the paying customer receives at checkout.
+// Never use the integer DB row ID in public URLs.
 type Props = { params: Promise<{ orderId: string }> }
 
 export default async function OrderPage({ params }: Props) {
   const { orderId } = await params
+
+  // Reject obviously invalid values early
+  if (!orderId || orderId.length < 10) notFound()
+
   const service = getSupabaseServiceClient()
 
   const { data: purchase } = await service
     .from('purchases')
     .select('id, customer_email, purchased_at, amount_paid, floorplan(title, file_paths)')
-    .eq('id', orderId)
+    .eq('stripe_session_id', orderId)
     .single()
 
   if (!purchase) notFound()

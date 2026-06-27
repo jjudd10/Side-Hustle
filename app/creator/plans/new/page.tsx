@@ -62,14 +62,26 @@ export default function NewPlanPage() {
 
   async function uploadFile(fileType: 'pdf' | 'cad', file: File) {
     setUploading(u => ({ ...u, [fileType]: true }))
-    const fd = new FormData()
-    fd.append('file', file)
-    fd.append('fileType', fileType)
-    const res = await fetch('/api/r2-upload-private', { method: 'POST', body: fd })
-    setUploading(u => ({ ...u, [fileType]: false }))
-    if (!res.ok) { setError('File upload failed.'); return }
-    const { filePath } = await res.json()
-    setForm(prev => ({ ...prev, file_paths: { ...prev.file_paths, [fileType]: filePath } }))
+    try {
+      const res = await fetch('/api/r2-upload-private', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ fileType, contentType: file.type || 'application/octet-stream' }),
+      })
+      if (!res.ok) { setError('File upload failed.'); return }
+      const { uploadUrl, key } = await res.json()
+
+      const put = await fetch(uploadUrl, {
+        method: 'PUT',
+        body: file,
+        headers: { 'Content-Type': file.type || 'application/octet-stream' },
+      })
+      if (!put.ok) { setError('File upload failed.'); return }
+
+      setForm(prev => ({ ...prev, file_paths: { ...prev.file_paths, [fileType]: key } }))
+    } finally {
+      setUploading(u => ({ ...u, [fileType]: false }))
+    }
   }
 
   async function handleSubmit() {

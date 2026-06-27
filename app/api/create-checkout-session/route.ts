@@ -37,9 +37,8 @@ export async function POST(request: NextRequest) {
 
   const totalCents = Math.round((basePriceValue + additionalCost) * 100)
 
-  const host = request.headers.get('host') ?? 'localhost:3000'
-  const proto = host.startsWith('localhost') ? 'http' : 'https'
-  const origin = `${proto}://${host}`
+  // Use the configured site URL — never trust the Host header for redirect targets
+  const origin = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://homeintime.cc'
 
   const session = await stripe.checkout.sessions.create({
     ui_mode: 'embedded_page',

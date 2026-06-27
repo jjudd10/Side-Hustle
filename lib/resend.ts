@@ -6,28 +6,41 @@ function getClient() {
   return _client
 }
 
+function escapeHtml(str: string): string {
+  return str
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#039;')
+}
+
 export async function sendPurchaseEmail(
   to: string,
   planTitle: string,
   downloadLinks: { label: string; url: string }[]
 ) {
+  const safeTitle = escapeHtml(planTitle)
   const linkRows = downloadLinks
-    .map(
-      ({ label, url }) =>
-        `<tr>
+    .map(({ label, url }) => {
+      const safeLabel = escapeHtml(label)
+      // URLs come from our own R2 presigner — validate they start with https
+      // before embedding to guard against unexpected key values
+      const safeUrl = url.startsWith('https://') ? url : '#'
+      return `<tr>
           <td style="padding:12px 0;border-bottom:1px solid #2a1f16;">
-            <a href="${url}" style="color:#d4af37;font-family:Georgia,serif;font-size:15px;text-decoration:none;">
-              Download ${label} &rarr;
+            <a href="${safeUrl}" style="color:#d4af37;font-family:Georgia,serif;font-size:15px;text-decoration:none;">
+              Download ${safeLabel} &rarr;
             </a>
           </td>
         </tr>`
-    )
+    })
     .join('')
 
   await getClient().emails.send({
     from: process.env.RESEND_FROM_EMAIL!,
     to,
-    subject: `Your floor plan files — ${planTitle}`,
+    subject: `Your floor plan files — ${safeTitle}`,
     html: `
       <!DOCTYPE html>
       <html>
@@ -42,7 +55,7 @@ export async function sendPurchaseEmail(
                         Your Purchase
                       </p>
                       <h1 style="margin:0 0 24px;font-size:28px;color:#f5ead8;font-weight:400;">
-                        ${planTitle}
+                        ${safeTitle}
                       </h1>
                       <p style="margin:0 0 32px;font-size:15px;line-height:1.7;color:#c4a882;">
                         Thank you for your purchase. Your floor plan files are ready to download below.
