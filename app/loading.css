@@ -19,13 +19,24 @@
   text-align: center;
   /* Starts invisible; GSAP fades this in on mount (see LogoTraceLoader.tsx) */
   opacity: 0;
+  /* Hint to the browser that opacity will be animated, so it can promote
+     this element to its own compositing layer before the fade starts. */
+  will-change: opacity;
 }
 
 /* Controls the rendered size of the SVG.
-   Increase width to make the animation more prominent on screen. */
+   200px renders sharply on 2× and 3× retina displays — the SVG coordinate
+   space (259.2 × 354.5) is large enough that the browser never upscales.
+   Increasing this value makes the animation more prominent; decreasing it
+   makes it more delicate. */
 .logo-loader-mark {
-  width: 150px;
+  width: 200px;
   color: var(--text);
+  /* Promote the SVG subtree to its own GPU compositing layer.
+     strokeDashoffset animations still run on the CPU, but isolating them
+     here prevents their repaints from invalidating the rest of the page. */
+  transform: translateZ(0);
+  will-change: transform;
 }
 
 /* Wireframe (stroke-only) styling for every SVG shape.
@@ -43,11 +54,13 @@
 }
 
 /* Small uppercase caption beneath the mark.
-   margin-top pulls the text up past the SVG's built-in bottom whitespace
-   (~19px at 150px width), then adds back 10px of breathing room.
-   Adjust this value if you resize .logo-loader-mark width. */
+   margin-top compensates for the SVG's built-in bottom whitespace
+   (~25px at 200px mark width), then adds back 10px of breathing room.
+   Recalculate this if you change .logo-loader-mark width:
+     whitespace = (354.494 - 322.44) / 354.494 × rendered-height
+     margin-top = -(whitespace - 10) */
 .logo-loader-text {
-  margin-top: -9px;
+  margin-top: -13px;
   text-transform: uppercase;
   letter-spacing: 0.35em;
   font-size: 0.6rem;

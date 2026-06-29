@@ -1,9 +1,13 @@
-import './loading.css'
-import LogoTraceLoader from './components/LogoTraceLoader'
+'use client'
+import { useEffect } from 'react'
 
-// Next.js treats this file as the Suspense fallback for the entire app.
-// It renders automatically while any Server Component in a route is fetching
-// data, then is replaced by the real page once loading is complete.
+// Signals the layout-level NavigationLoader that a Suspense boundary is active.
+// The NavigationLoader owns the actual animation and all timing logic, so the
+// animation can complete its full cycle even after this component unmounts.
 export default function Loading() {
-  return <LogoTraceLoader />
+  useEffect(() => {
+    window.dispatchEvent(new CustomEvent('app:loading'))
+    return () => { window.dispatchEvent(new CustomEvent('app:loaded')) }
+  }, [])
+  return null
 }
