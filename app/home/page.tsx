@@ -35,7 +35,7 @@ export default async function HomePage() {
             <br />
             Waiting to Become a Reality.</h1>
           <div className="hero-actions">
-            <Link className="btn btn-primary" href="/shop">
+            <Link className="btn btn-primary" href="/gallery">
               Browse Floorplans
             </Link>
           </div>
